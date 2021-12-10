@@ -1,85 +1,66 @@
 import { useState } from 'react';
 import './App.css';
+import { data } from './data/data';
+import useLocalStorage from './hooks/useLocalStorage';
 
 function App() {
-  const questions = [
-    {
-      questionText: "What is the capital of Belgium?",
-      answerOptions: [
-        { answerText: "Brussels", isCorrect: true, isSelected: false },
-        { answerText: "London", isCorrect: false, isSelected: false },
-        { answerText: "Paris", isCorrect: false, isSelected: false },
-      ],
-    },
-    {
-      questionText: "What is the capital of Spain?",
-      answerOptions: [
-        { answerText: "Barcelona", isCorrect: false, isSelected: false },
-        { answerText: "Madrid", isCorrect: true, isSelected: false },
-        { answerText: "Seville", isCorrect: false, isSelected: false },
-      ],
-    },
-    {
-      questionText: "What is the capital of Russia?",
-      answerOptions: [
-        { answerText: "Moscow", isCorrect: true, isSelected: false },
-        { answerText: "Voronej", isCorrect: false, isSelected: false },
-        { answerText: "St.Petersbourg", isCorrect: false, isSelected: false },
-      ],
-    },
-    {
-      questionText: "What is the capital of Mongolia?",
-      answerOptions: [
-        { answerText: "Oulan-Bator", isCorrect: true, isSelected: false },
-        { answerText: "Gengis-City", isCorrect: false, isSelected: false },
-        { answerText: "Kang-Bator", isCorrect: false, isSelected: false },
-      ],
-    },
-    {
-      questionText: "What is the capital of Chili?",
-      answerOptions: [
-        { answerText: "Spicy", isCorrect: false, isSelected: false },
-        { answerText: "Santiago", isCorrect: true, isSelected: false },
-        { answerText: "Con Carne", isCorrect: false, isSelected: false }
-      ],
-    },
-  ];
-  const [score, setScore] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [endQuiz, setendQuiz] = useState(false);
 
-  const handleClick = (isCorrect) => {
+  const [endQuiz, setEndQuiz] = useState(false);
+  const [questions, setQuestions] = useLocalStorage('questions', data);
+
+  const handleClick = (isCorrect, questionId, optionId, isSelected, answerCorrect) => {
+
     if (isCorrect) {
-      setScore(score + 1);
-    }
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
-    }
-    if (currentQuestion + 1 == questions.length) {
-      setendQuiz(true);
+      const updatedData = questions.map((question) =>
+          questionId === question["id"] ?
+            {...question,
+            answerCorrect: !answerCorrect,
+            answerOptions: question['answerOptions'].map((option) =>
+              optionId === option["optionId"] ?
+              {...option,
+              isSelected: !isSelected
+              } : option
+            )
+          } : question
+      );
+      setQuestions(updatedData);
+    } else {
+      const updatedData = questions.map((question) =>
+        questionId === question["id"]
+          ? {...question,
+            answerCorrect: false,
+            answerOptions: question["answerOptions"].map((option) =>
+              optionId === option["optionId"]
+                ? { ...option, isSelected: !isSelected }
+                : {...option, isSelected: false}
+              ),
+            }
+          : question
+      );
+      setQuestions(updatedData);
     }
   }
 
   return (
     <div className="App">
       <div className="quiz">
-        <>
-          <div className="question-section">
-            <div className="question-text">
-              {questions[currentQuestion].questionText}
+        {questions.map((question) => (
+          <>
+            <div className="question-section">
+              <div className="question-text">{question.questionText}</div>
             </div>
-          </div>
-          <div className="answer-section">
-            {questions[currentQuestion].answerOptions.map((option) => (
-              <button onClick={() => handleClick(option.isCorrect)}>
-                <div className="answer-text">{option.answerText}</div>
-              </button>
-            ))}
-          </div>
-        </>
-        {endQuiz &&
-          <h1>Your score is: {score} / {questions.length}</h1>
-        }
+            <div className="answer-section">
+              {question.answerOptions.map((option) => (
+                <button
+                  key={option.answerText}
+                  onClick={() => handleClick(option.isCorrect, question["id"], option['optionId'], option.isSelected, question.answerCorrect)}
+                >
+                  <div className="answer-text">{option.answerText}</div>
+                </button>
+              ))}
+            </div>
+          </>
+        ))}
       </div>
     </div>
   );
