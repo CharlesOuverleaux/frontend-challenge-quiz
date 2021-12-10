@@ -7,6 +7,7 @@ function App() {
 
   const [isSubmitted, setisSubmitted] = useState(false);
   const [questions, setQuestions] = useLocalStorage('questions', data);
+  const [score, setScore] = useState(0);
 
   const handleClick = (isCorrect, questionId, optionId, isSelected, answerCorrect) => {
 
@@ -43,10 +44,16 @@ function App() {
 
   const handleSubmit = (isSubmitted) => {
       setisSubmitted(!isSubmitted);
+      let count = 0
+      questions.forEach((question) =>
+        question.answerCorrect ? count++ : count
+      )
+      setScore(count)
   }
 
   return (
     <div className="App">
+      { isSubmitted ? "Score message" : "Quiz"}
       {!isSubmitted && (
         <div className="quiz">
           {questions.map((question) => (
@@ -75,7 +82,9 @@ function App() {
             </>
           ))}
         </div>
-      )}
+      )
+      }
+      <p>Your score is: {score} out of 5</p>
       <button onClick={() => handleSubmit(isSubmitted)}>{isSubmitted ? 'Go back': 'Submit my answers'}</button>
     </div>
   );
