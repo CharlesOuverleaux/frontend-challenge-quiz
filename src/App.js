@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './App.css';
 
 function App() {
@@ -43,6 +44,12 @@ function App() {
       ],
     },
   ];
+  const [score, setScore] = useState(0);
+  const handleClick = (isCorrect) => {
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+  }
 
   return (
     <div className="App">
@@ -54,7 +61,7 @@ function App() {
             </div>
             <div className="answer-section">
               {question.answerOptions.map((option) => (
-                <button>
+                <button onClick={() => handleClick(option.isCorrect)}>
                   <div className="answer-text">{option.answerText}</div>
                 </button>
               ))}
@@ -62,6 +69,7 @@ function App() {
           </>
         ))}
         <button>Submit my answers</button>
+        <h1>Your score is: {score}</h1>
       </div>
     </div>
   );
