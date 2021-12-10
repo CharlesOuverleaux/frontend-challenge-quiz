@@ -5,7 +5,7 @@ import useLocalStorage from './hooks/useLocalStorage';
 
 function App() {
 
-  const [endQuiz, setEndQuiz] = useState(false);
+  const [isSubmitted, setisSubmitted] = useState(false);
   const [questions, setQuestions] = useLocalStorage('questions', data);
 
   const handleClick = (isCorrect, questionId, optionId, isSelected, answerCorrect) => {
@@ -41,27 +41,42 @@ function App() {
     }
   }
 
+  const handleSubmit = (isSubmitted) => {
+      setisSubmitted(!isSubmitted);
+  }
+
   return (
     <div className="App">
-      <div className="quiz">
-        {questions.map((question) => (
-          <>
-            <div className="question-section">
-              <div className="question-text">{question.questionText}</div>
-            </div>
-            <div className="answer-section">
-              {question.answerOptions.map((option) => (
-                <button
-                  key={option.answerText}
-                  onClick={() => handleClick(option.isCorrect, question["id"], option['optionId'], option.isSelected, question.answerCorrect)}
-                >
-                  <div className="answer-text">{option.answerText}</div>
-                </button>
-              ))}
-            </div>
-          </>
-        ))}
-      </div>
+      {!isSubmitted && (
+        <div className="quiz">
+          {questions.map((question) => (
+            <>
+              <div className="question-section">
+                <div className="question-text">{question.questionText}</div>
+              </div>
+              <div className="answer-section">
+                {question.answerOptions.map((option) => (
+                  <button
+                    key={option.answerText}
+                    onClick={() =>
+                      handleClick(
+                        option.isCorrect,
+                        question["id"],
+                        option["optionId"],
+                        option.isSelected,
+                        question.answerCorrect
+                      )
+                    }
+                  >
+                    <div className="answer-text">{option.answerText}</div>
+                  </button>
+                ))}
+              </div>
+            </>
+          ))}
+        </div>
+      )}
+      <button onClick={() => handleSubmit(isSubmitted)}>{isSubmitted ? 'Go back': 'Submit my answers'}</button>
     </div>
   );
 }
