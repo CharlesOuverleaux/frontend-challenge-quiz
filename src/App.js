@@ -46,6 +46,20 @@ function App() {
 
   return (
     <div className="App">
+      {questions.map((question) => (
+        <>
+          <div className="question-section">
+            <div className="question-text">{question.questionText}</div>
+          </div>
+          <div className="answer-section">
+            {question.answerOptions.map((option) => (
+              <div className="answer-text">
+                {option.answerText}
+              </div>
+            ))}
+          </div>
+        </>
+      ))}
     </div>
   );
 }
