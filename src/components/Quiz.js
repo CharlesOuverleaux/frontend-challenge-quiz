@@ -15,7 +15,7 @@ export default function Quiz(){
               answerOptions: question["answerOptions"].map((option) =>
                 optionId === option["optionId"]
                   ? { ...option, isSelected: !isSelected }
-                  : option
+                  : { ...option, isSelected: false }
               ),
             }
           : question
