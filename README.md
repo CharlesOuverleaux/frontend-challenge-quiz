@@ -1,8 +1,6 @@
 # Frontend Coding Challenge: Building a quiz
 
-This is a quiz build out of three component:
---Quiz
---Score Message
+This is a quiz build out of two component: Quiz & Score Message
 
 The users can select one answer for each question and submit their answers.
 Once submitted, the users will see their score (# of correct answers).
