@@ -42,6 +42,7 @@ export default function Quiz(){
 
   return (
     <div className="Quiz">
+      <h1>Capital Quiz</h1>
       {questions.map((question) => (
         <div className="question-answer-section" key={uuidv4()}>
           <div className="question-section">

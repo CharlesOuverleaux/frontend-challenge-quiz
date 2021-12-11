@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       { isSubmitted ? <ScoreMessage /> : <Quiz />}
-      <button onClick={toggle}>{isSubmitted ? 'Go back': 'Submit my answers'}</button>
+      <button className="submitButton" onClick={toggle}>{isSubmitted ? 'Go back': 'Submit my answers'}</button>
     </div>
   );
 }

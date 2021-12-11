@@ -1,3 +1,4 @@
+import './ScoreMessage.css'
 
 export default function ScoreMessage(){
   const results = JSON.parse(localStorage.getItem('questions'))
@@ -9,7 +10,7 @@ export default function ScoreMessage(){
 
   return (
     <div className="ScoreMessage">
-      <p>Your score is: {count} out of 5</p>
+      <p>Your have {count} correct answers out of {results.length} questions</p>
     </div>
   );
 }

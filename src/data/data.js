@@ -25,7 +25,7 @@ const data = [
     answerOptions: [
       { optionId: 0, answerText: "Moscow", isCorrect: true, isSelected: false },
       { optionId: 1, answerText: "Voronej", isCorrect: false, isSelected: false },
-      { optionId: 2, answerText: "St.Petersbourg", isCorrect: false, isSelected: false },
+      { optionId: 2, answerText: "Raspoutine", isCorrect: false, isSelected: false },
     ],
     answerCorrect: false,
   },
