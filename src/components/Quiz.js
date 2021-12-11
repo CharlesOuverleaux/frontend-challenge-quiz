@@ -1,6 +1,7 @@
 import useLocalStorage from "../hooks/useLocalStorage"
 import { data } from "../data/data"
 import './Quiz.css'
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Quiz(){
   const [questions, setQuestions] = useLocalStorage("questions", data);
@@ -42,14 +43,16 @@ export default function Quiz(){
   return (
     <div className="Quiz">
       {questions.map((question) => (
-        <>
+        <div className="question-answer-section" key={uuidv4()}>
           <div className="question-section">
             <div className="question-text">{question.questionText}</div>
           </div>
           <div className="answer-section">
             {question.answerOptions.map((option) => (
               <button
-                className={(option.isSelected ? "button-selected" : "button-unselected")}
+                className={
+                  option.isSelected ? "button-selected" : "button-unselected"
+                }
                 key={option.answerText}
                 onClick={() =>
                   handleClick(
@@ -63,10 +66,10 @@ export default function Quiz(){
               >
                 <div className="answer-text">{option.answerText}</div>
               </button>
-          ))}
+            ))}
+          </div>
         </div>
-      </>
-    ))}
+      ))}
     </div>
   );
 }
